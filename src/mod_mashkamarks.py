@@ -3,7 +3,7 @@
 # Decompiled from: Python 3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]
 # Embedded file name: <mashkamarks>
 import json, os, traceback
-VERSION = '1.0.1'
+VERSION = '1.0.2'
 RES_KEY = 'mashka.marks.view'
 BATTLE_KEY = 'mashka.marks.battle'
 LAYOUT_PATH = 'coui://gui/gameface/mods/mashka_marks/Panel.html'

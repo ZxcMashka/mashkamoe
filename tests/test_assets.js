@@ -5,6 +5,7 @@ for(const name of ['panel','battle','preview']){
  const text=fs.readFileSync(file,'utf8');new vm.Script(text);
  const start=text.indexOf('var mmStopped='),end=text.indexOf('window.MM_CLEANUP_'+name+'=mmCleanup;',start);
  check(start>0&&end>start);
+ check(!/window\.mm(?:Frame|Timeout|Interval)\(/.test(text));
  let jobs=new Map(),listeners=[],id=0;
  const window={addEventListener:(...x)=>listeners.push(x),removeEventListener:(...x)=>{listeners=listeners.filter(y=>y[0]!==x[0]||y[1]!==x[1])},cancelAnimationFrame:x=>jobs.delete(x)};
  const context={window,document:{createElement:()=>({style:{}})},setTimeout:fn=>{jobs.set(++id,fn);return id},setInterval:fn=>{jobs.set(++id,fn);return id},requestAnimationFrame:fn=>{jobs.set(++id,fn);return id},clearTimeout:x=>jobs.delete(x),clearInterval:x=>jobs.delete(x)};
@@ -15,6 +16,9 @@ for(const name of ['panel','battle','preview']){
  context.mmNotice(root,{ok:true,lang:'en',region:'asia',regionalMissing:true});
  check(badge.textContent.includes('ASIA'));check(badge.textContent.includes('unavailable'));check(badge.textContent.includes('estimates'));
  context.mmNotice(root,{ok:true,lang:'ru',region:'eu',regionalMissing:false});check(badge.textContent.includes('оценки'));check(!badge.textContent.includes('Нет региональных'));
+ let removed=0;const retired={nodeType:1,addEventListener:()=>{},removeEventListener:()=>removed++};
+ context.document.documentElement={contains:()=>false};
+ context.mmListen(retired,'click',()=>{});context.mmPrune();check(removed===1);
  context.mmCleanup();check(jobs.size===0);check(listeners.length===0);late();check(called===0);
  context.mmCleanup();context.mmInterval(()=>called++,1);check(jobs.size===0);
  check(!/(?<!function )\bsetInterval\(/.test(text.slice(end))); // all application timers use tracked wrappers
