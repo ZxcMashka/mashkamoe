@@ -1,0 +1,4 @@
+# Local Python caches; package bytecode is the installable mod.
+__pycache__/
+src/*.pyc
+tests/*.pyc

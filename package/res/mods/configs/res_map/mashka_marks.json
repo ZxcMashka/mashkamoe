@@ -1,0 +1,22 @@
+[
+    {
+        "itemID": "mashka.marks.view",
+        "type": "Layout",
+        "path": "coui://gui/gameface/mods/mashka_marks/Panel.html",
+        "parameters": {
+            "extension": "",
+            "entrance": "MashkaMarksPanel",
+            "impl": "gameface"
+        }
+    },
+    {
+        "itemID": "mashka.marks.battle",
+        "type": "Layout",
+        "path": "coui://gui/gameface/mods/mashka_marks/Battle.html",
+        "parameters": {
+            "extension": "",
+            "entrance": "MashkaMarksBattle",
+            "impl": "gameface"
+        }
+    }
+]
