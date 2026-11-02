@@ -3,7 +3,7 @@
 import hashlib, os, re, subprocess, zipfile
 from pathlib import Path
 ROOT=Path(__file__).resolve().parent
-VERSION='1.0.2'
+VERSION='1.0.3'
 package=ROOT/'package'
 compiler=os.environ.get('PYTHON2','/workspace/python2/bin/python2.7')
 source=ROOT/'src/mod_mashkamarks.py'

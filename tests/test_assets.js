@@ -12,10 +12,11 @@ for(const name of ['panel','battle','preview']){
  vm.createContext(context);vm.runInContext(text.slice(start,end),context);
  let called=0;context.mmTimeout(()=>called++,10);const late=[...jobs.values()][0];context.mmInterval(()=>called++,10);context.mmFrame(()=>called++);
  check(jobs.size===3);check(listeners.length===2);
- let badge;const root={querySelector:()=>badge,appendChild:x=>badge=x};
+ let badge;const root={querySelector:()=>badge,appendChild:x=>{badge=x;x.parentNode=root},removeChild:()=>{badge=null}};
  context.mmNotice(root,{ok:true,lang:'en',region:'asia',regionalMissing:true});
- check(badge.textContent.includes('ASIA'));check(badge.textContent.includes('unavailable'));check(badge.textContent.includes('estimates'));
- context.mmNotice(root,{ok:true,lang:'ru',region:'eu',regionalMissing:false});check(badge.textContent.includes('оценки'));check(!badge.textContent.includes('Нет региональных'));
+ check(badge.textContent.includes('ASIA'));check(badge.textContent.includes('unavailable'));check(!badge.textContent.includes('estimates'));
+ context.mmNotice(root,{ok:true,lang:'ru',region:'asia',regionalMissing:true});check(badge.textContent.includes('Нет региональных'));
+ context.mmNotice(root,{ok:true,lang:'ru',region:'eu',regionalMissing:false});check(badge===null);
  let removed=0;const retired={nodeType:1,addEventListener:()=>{},removeEventListener:()=>removed++};
  context.document.documentElement={contains:()=>false};
  context.mmListen(retired,'click',()=>{});context.mmPrune();check(removed===1);
